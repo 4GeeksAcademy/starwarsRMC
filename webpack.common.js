@@ -15,10 +15,21 @@ module.exports = {
   module: {
     rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.js$|jsx/,
           exclude: /node_modules/,
           use: ['babel-loader']
         },
+        {
+          test: /\.mp3$/,
+          use: [
+              {
+                  loader: 'file-loader',
+                  options: {
+                      name: '[path][name].[ext]', // Keeps the original file name and path
+                  },
+              },
+          ],
+      },
         {
           test: /\.(css)$/, use: [{
               loader: "style-loader" // creates style nodes from JS strings
