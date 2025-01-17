@@ -1,23 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import rigoBaby from '../../img/rigo-baby.jpg'
+import { Context } from '../store/appContext'
+import { number } from 'prop-types'
 
 const MasPlebada = () => {
+    const {store , actions} = useContext(Context)
+    
+    
+   
+
+    
     return (
-        <div className='container-fluid card p-6' style={{ width: "90%" }}>
-            <div className='container-fluid row' style={{height:"10%"}}>
+        <div className='container-fluid card p-6' style={{ width: "90%" }} >
+            <div className='container-fluid row' style={{height:"10%"}} >
                     <div className='col-6'>
                         <img src={rigoBaby}  alt="..." />
                     </div>
                     <div className='col-6'>
-                        <h1>Nombre del personaje</h1>
+                        <h1>{store.currentData.result.properties.name}</h1>
                         <div className="card-body">
                             <h5 className="card-title">Card title</h5>
                             <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
                      </div>
-            </div>
-            <div className='container-fluid row justify-content-center'>
-                <table className="table-reponsive table table-striped">
+                      <div className='container-fluid row justify-content-center'>
+                        <table className="table-reponsive table table-striped">
                         <thead>
                             <tr>
                             <th scope="col">#</th>
@@ -36,9 +43,11 @@ const MasPlebada = () => {
                         </tbody>
                 </table>
              </div>
-            
+             </div>
+                    )})}
         </div>
-    )
-}
+    );
+};
+
 
 export default MasPlebada
