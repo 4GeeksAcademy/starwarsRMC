@@ -1,44 +1,59 @@
-import React from 'react'
-import rigoBaby from '../../img/rigo-baby.jpg'
+import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { Context } from '../store/appContext'
 
 const MasPlazas = () => {
+    const { store, actions } = useContext(Context)
+
+
     return (
-        <div className='container-fluid card p-6' style={{ width: "90%" }}>
-            <div className='container-fluid row' style={{height:"10%"}}>
-                    <div className='col-6'>
-                        <img src={rigoBaby}  alt="..." />
-                    </div>
-                    <div className='col-6'>
-                        <h1>Nombre de la plaza</h1>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                     </div>
-            </div>
-            <div className='container-fluid row justify-content-center'>
-                <table className="table-reponsive table table-striped">
+        <div className='container-fluid card p-6' style={{ width: "90%" }} >
+
+            <div className='container-fluid row' style={{ height: "10%" }} >
+                <div className='col-6'>
+                    <img src={`https://starwars-visualguide.com//assets/img/planets/${store.currentDatas.result.uid}.jpg`} className="card-img-top" alt="Caida de Origen" style={{ width: "100%" }} />
+
+                </div>
+                <div className='col-6'>
+                    <Link to="/">
+                        <button className="btn btn-danger" >inicio</button>
+                    </Link>
+                    <h1>{store.currentDatas.result.properties.name}</h1>
+
+
+                </div>
+                <div className='container-fluid row justify-content-center'>
+                    <table className="table-fluid table table-striped">
                         <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <tr className='text-center'>
+                                <th scope="col">Clima</th>
+                                <th scope="col">Diámetro</th>
+                                <th scope="col">Gravedad</th>
+                                <th scope="col">Periodo Orbital</th>
+                                <th scope="col">Población</th>
+                                <th scope="col">Superficie con Agua</th>
+                                <th scope="col">Terreno</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <tr className='text-center'>
+                                <td>{store.currentDatas.result.properties.climate}</td>
+                                <td>{store.currentDatas.result.properties.diameter}</td>
+                                <td>{store.currentDatas.result.properties.gravity}</td>
+                                <td>{store.currentDatas.result.properties.orbital_period}</td>
+                                <td>{store.currentDatas.result.properties.population}</td>
+                                <td>{store.currentDatas.result.properties.surface_water}</td>
+                                <td>{store.currentDatas.result.properties.terrain}</td>
+
                             </tr>
                         </tbody>
-                </table>
-             </div>
-            
+                    </table>
+                </div>
+            </div>
+
         </div>
-    )
-}
+    );
+};
+
 
 export default MasPlazas

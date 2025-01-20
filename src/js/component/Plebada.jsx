@@ -5,23 +5,39 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 export const Plebada = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
-  const handlerDetail = (item) => {
-    console.log("este es el item",item)
+  
+  const handlerDetail = async (item) => {
+    console.log("aqui abajito", item);
+    let perro = await actions.goToDetailPlebada(item.url);
     
-    let resultado = actions.goToDetailPlebada(item.url)
-    if (resultado){
-      navigate("./masPlebada")
+    if (perro) {
+      navigate("./masPlebada");
     }
   }
-  
-
- 
-
+  const handlerFavorites = async (item) => {
+    console.log("previo",item)
+    let favorites = await actions.addFavorites(item);
+    
+    if (favorites) {
+      alert("Agregado a favoritos");
+    }
+  }
+  const handlerNext = async () => {
+    console.log("Next", store.vatos.next);
+    await actions.getVatosNext(store.vatos.next);
+    
+    
+  };
+  const handlerBack = async () => {
+    console.log("Back", store.vatos.previous);
+    await actions.getVatosBack(store.vatos.previous);
+    
+    
+  };
   useEffect(() => {
     actions.getVatos();
   }, []);
@@ -29,7 +45,7 @@ export const Plebada = () => {
   return (
     <div className="mt-5">
       <div className="card" style={{ width: "100%" }}>
-        <h1 className="text-danger">Plebada</h1>
+        <h1 className="text-danger">Personajes</h1>
         <div className="container-fluid" style={{
         display: "flex",
         flexDirection: "row",
@@ -40,13 +56,14 @@ export const Plebada = () => {
         gap: "1rem",
         border: "1px solid #ccc",
         borderRadius: "8px",
+        height: "350px"
       }}>
-        {store.vatos && store.vatos.map((item, index) => {
+        {store.vatos.results && store.vatos.results.map((item, index) => {
           
             return (
-              <div className="container-fluid" key={index} style={{
-                minWidth: "200px",
-                height: "150px",
+              <div className="container-fluid row" key={index} style={{
+                minWidth: "220px",
+                height: "300px",
                 backgroundColor: "#F5F5F5",
                 display: "flex",
                 alignItems: "center",
@@ -54,16 +71,13 @@ export const Plebada = () => {
                 borderRadius: "8px",
                 boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
               }}>
-              <img src={`https://starwars-visualguide.com//assets/img/characters/${item.uid}.jpg`} className="card-img-top" alt="estarguars image" style={{width:"100%"}} />
+              <img src={`https://starwars-visualguide.com//assets/img/characters/${item.uid}.jpg`} className="card-img-top" alt="Caida de Origen" style={{width:"100%"}} />
               <div className="card-body col">
                 <h5 className="card-title">
                   {item.name}
                 </h5>
-                
-               
                   <button href="#" onClick={()=>handlerDetail(item)} className="btn btn-primary">Saber mas...</button>
-               
-                <button href="#" className="btn btn-danger">
+                <button href="#" onClick={()=>handlerFavorites(item)} className="btn btn-danger">
                   <FontAwesomeIcon icon={faHeart} />
                 </button>
                  
@@ -74,7 +88,9 @@ export const Plebada = () => {
         })}
       </div>
       </div>
+      <button href="#" onClick={()=>handlerBack(store.vatos.next)} className="btn btn-dark">Anterior</button>
 
+      <button href="#" onClick={()=>handlerNext(store.vatos.next)} className="btn btn-dark">Siguiente</button>
     </div>//Main div close
   )
 }

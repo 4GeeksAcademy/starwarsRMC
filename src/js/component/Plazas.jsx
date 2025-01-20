@@ -9,18 +9,29 @@ import { Link } from "react-router-dom";
 
 export const Plazas = () => {
   const { store, actions } = useContext(Context);
-  // const handleSaber = () =>
-
-
-
-  useEffect(() => {
-    actions.getPlazas();
-  }, []);
-
+    const navigate = useNavigate();
+    const handlerDetail = async (item) => {
+      let gato = await actions.goToDetailPlazas(item.url);
+      console.log("aqui abajito", gato);
+      if (gato) {
+        navigate("./masPlazas");
+      }
+    };
+    const handlerFavorites2 = async (item) => {
+      console.log("previo",item)
+      let favorites = await actions.addFavorites(item);
+      
+      if (favorites) {
+        alert("Agregado a favoritos");
+      }
+    }
+    useEffect(() => {
+      actions.getPlazas();
+    }, []);
   return (
     <div className="mt-5">
       <div className="card" >
-        <h1 className="text-danger">Plazas</h1>
+        <h1 className="text-danger">Planetas</h1>
         <div className="container-fluid" style={{
           display: "flex",
           flexDirection: "row",
@@ -31,13 +42,14 @@ export const Plazas = () => {
           gap: "1rem",
           border: "1px solid #ccc",
           borderRadius: "8px",
+          height: "350px"
         }}>
           {store.plazas && store.plazas.map((item, index) => {
 
             return (
-              <div className="col" key={index} style={{
-                minWidth: "200px",
-                height: "150px",
+              <div className="container-fluid row" key={index} style={{
+                minWidth: "220px",
+                height: "300px",
                 backgroundColor: "#F5F5F5",
                 display: "flex",
                 alignItems: "center",
@@ -52,10 +64,8 @@ export const Plazas = () => {
                   </h5>
 
 
-                  <Link to={`/masPlazas/${item.uid}`}>
-                    <button href="#" onClick={() => actions.goToDetailPlazas.setNumber(item.uid)} className="btn btn-primary">Saber mas...</button>
-                  </Link>
-                  <button href="#" className="btn btn-danger">
+                  <button href="#" onClick={()=>handlerDetail(item)} className="btn btn-primary">Saber mas...</button>
+                  <button href="#" onClick={()=>handlerFavorites2(item)} className="btn btn-danger">
                     <FontAwesomeIcon icon={faHeart} />
                   </button>
 
@@ -65,8 +75,10 @@ export const Plazas = () => {
             );
           })}
         </div>
+        
       </div>
-
+      <button href="#" onClick={()=>handlerNext(item)} className="btn btn-primary">Saber mas...</button>
+          
     </div>//Main div close
   )
 }

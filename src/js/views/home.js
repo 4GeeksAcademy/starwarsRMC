@@ -4,7 +4,7 @@ import { Plebada } from "../component/Plebada.jsx";
 import { Plazas } from "../component/Plazas.jsx";
 
 export const Home = () => (
-	<div className="mt-5"> 
+	<div>
 		<Plebada />
 		<Plazas />
 	</div>//Main div close

@@ -4,7 +4,8 @@ import { Navigate } from "react-router";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			vatos: [
+			vatos: [{}],
+			hardcore:
 				{
 					birth_year: "MIO", 
 					eye_color: "Blue", 
@@ -13,7 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					height: "172", 
 					homeworld: "https://www.swapi.tech/api/planets/1/", 
 					mass: "77", 
-					name: "Luke Skywalker", 
+					name: "DDDDDDDXXXXXXX", 
 					skin_color: "Fair", 
 					created: "2014-12-09T13:50:51.644000Z", 
 					edited: "2014-12-10T13:52:43.172000Z", 
@@ -21,7 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					url: "https://www.swapi.tech/api/people/1/", 
 					
 				  },
-			],
+			
 			plazas: [
 				{
 					birth_year: "MIO", 
@@ -40,7 +41,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					
 				  }
 			],
-			currentData: {}
+			currentData: {},
+			currentDatas: {},
+			favoritos: []
+			
 			
 		},
 		actions: {
@@ -55,8 +59,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("Tas bien wey")
 					}
 					let data = await response.json();
-					console.log("fijate",data)
-					setStore({ vatos: data.results });
+					console.log("fijate vato",data)
+					setStore({ vatos: data });
+					console.log("fijate mas",store)
+					
+				
+
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			getVatosNext: async (otro) => {
+				let store = getStore();
+				
+				
+				try {
+					let response = await fetch(`${otro}`, { 
+					})
+					if (!response.ok) {
+						throw new Error("Tas bien wey")
+					}
+					let data = await response.json();
+					console.log("fijate fijateeeee",data)
+					setStore({ vatos: data });
+					console.log("fijate mas",store)
+					
+				
+
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			getVatosBack: async (otromas) => {
+				let store = getStore();
+				
+				
+				try {
+					let response = await fetch(`${otromas}`, { 
+					})
+					if (!response.ok) {
+						throw new Error("Tas bien wey")
+					}
+					let data = await response.json();
+					console.log("fijate fijateeeee",data)
+					setStore({ vatos: data });
 					console.log("fijate mas",store)
 					
 				
@@ -87,30 +133,67 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 				}
 			},
-			goToDetailPlebada : async (item) => {
+			goToDetailPlebada : async (perro) => {
+				console.log("back", perro);
+			
 				try {
-					let response = await fetch(`${item.url}`)
+					let response = await fetch(`${perro}`)
 					if (!response.ok) {
 						throw new Error("Tas bien wey")
 					}
 					let data = await response.json();
-						console.log("esta es la data",data)
+						console.log("ES VIERNES",data)
 					let store = getStore();
-				setStore({...store,currentData:data})
+				setStore({...store,currentData:{...data}});
+				console.log("otro mas wey",store.currentData)
+				
 				return true
 				} catch (error) {
 					console.error(error)
 					
 				}
+			},
+			goToDetailPlazas : async (gato) => {
+				try {
+					let response = await fetch(`${gato}`)
+					if (!response.ok) {
+						throw new Error("Tas bien wey")
+					}
+					let data = await response.json();
+						console.log("ES VIERNES",data)
+					let store = getStore();
+				setStore({...store,currentDatas:{...data}});
+			
 				
-				
+				return true
+				} catch (error) {
+					console.error(error)
+					
+				}
 
 			},
-			goToDetailPlazas : () => {
-				const [number, setNumber]=useState()
-				Navigate(`/masPlazas/${number}`);
-
+			addFavorites : async (favorites) => {
+				console.log("recibido",favorites)
+				try {
+					let store = getStore();
+					setStore({...store, favoritos: [...store.favoritos, ...(Array.isArray(favorites) ? favorites : [favorites])]})
+					return true
+				} catch (error) {
+					console.error(error)
+     			 };
+			},
+			deleteFavorites : async (bye) => {
+				console.log("recibido",bye)
+				try {
+					let store = getStore();
+					const updatedFavoritos = store.favoritos.filter(favorito => favorito !== bye);
+        setStore({ ...store, favoritos: updatedFavoritos });
+        return true;
+				} catch (error) {
+					console.error(error)
+   			   };
 			}
+			
 			
 				}
 	};
