@@ -111,6 +111,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 				}
 			},
+			getPlazasNext: async (otros) => {
+				let store = getStore();
+				
+				
+				try {
+					let response = await fetch(`${otros}`, { 
+					})
+					if (!response.ok) {
+						throw new Error("Tas bien wey")
+					}
+					let data = await response.json();
+					console.log("fijate fijateeeee",data)
+					setStore({ plazas: data });
+					console.log("fijate mas",store)
+					
+				
+
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			getPlazasBack: async (otromass) => {
+				let store = getStore();
+				
+				
+				try {
+					let response = await fetch(`${otromass}`, { 
+					})
+					if (!response.ok) {
+						throw new Error("Tas bien wey")
+					}
+					let data = await response.json();
+					console.log("fijate fijateeeee",data)
+					setStore({ plazas: data });
+					console.log("fijate mas",store)
+					
+				
+
+				} catch (error) {
+					console.log(error);
+				}
+			},
 			
 			getPlazas: async () => {
 				let store = getStore();
@@ -124,7 +166,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					let data2 = await response.json();
 					console.log("fijate",data2)
-					setStore({ plazas: data2.results });
+					setStore({ plazas: data2 });
 					console.log("fijate mas",store)
 					
 				
