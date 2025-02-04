@@ -1,20 +1,15 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import estarguars from "../../img/estarguars.png";
 import { Context } from "../store/appContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDeleteLeft } from "@fortawesome/free-solid-svg-icons";
 
-
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
-	console.log("FAVVV", store.favoritos);
-
 	const handlerDelete = async (item) => {
-		console.log("previo borrar", item)
-		let bye = actions.deleteFavorites(item);
-
-		if (bye) {
+		let deletedFavs = actions.deleteFavorites(item);
+		if (deletedFavs) {
 			alert("Borrado");
 		}
 	}
@@ -23,18 +18,14 @@ export const Navbar = () => {
 			<Link to="/">
 				<img src={estarguars} width="100" height="50" alt="" />
 			</Link>
-
 			<div className="dropdown">
 				<button className="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 					Tus Favoritos
 					<span className=" badge rounded-pill bg-danger">
 						{store.favoritos.length}
-						
 					</span>
 				</button>
-
 				<ul className="container dropdown-menu">
-
 					{Array.isArray(store.favoritos) && store.favoritos.map((item, index) => {
 						return (
 							<li key={index}>
@@ -44,12 +35,9 @@ export const Navbar = () => {
 										<FontAwesomeIcon icon={faDeleteLeft} />
 									</button>
 								</h6>
-
 							</li>
 						)
 					})}
-
-
 				</ul>
 			</div>
 		</nav>

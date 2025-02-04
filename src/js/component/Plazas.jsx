@@ -1,46 +1,35 @@
 import React from "react";
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 export const Plazas = () => {
   const { store, actions } = useContext(Context);
-    const navigate = useNavigate();
-
-    const handlerDetail = async (item) => {
-      let gato = await actions.goToDetailPlazas(item.url);
-      console.log("aqui abajito", gato);
-      if (gato) {
-        navigate("./masPlazas");
-      }
-    };
-    const handlerFavorites2 = async (item) => {
-      console.log("previo",item)
-      let favorites = await actions.addFavorites(item);
-      
-      if (favorites) {
-        alert("Agregado a favoritos");
-      }
+  const navigate = useNavigate();
+  const handlerDetail = async (item) => {
+    let navTo = await actions.goToDetailPlazas(item.url);
+    if (navTo) {
+      navigate("./masPlazas");
     }
-    const handlerNext2 = async () => {
-      console.log("Next", store.plazas.next);
-      await actions.getPlazasNext(store.plazas.next);
-      
-      
-    };
-    const handlerBack2 = async () => {
-      console.log("Back", store.plazas.previous);
-      await actions.getPlazasBack(store.plazas.previous);
-      
-      
-    };
-    useEffect(() => {
-      actions.getPlazas();
-    }, []);
+  };
+  const handlerFavorites2 = async (item) => {
+    let favorites = await actions.addFavorites(item);
+    if (favorites) {
+      alert("Agregado a favoritos");
+    }
+  }
+  const handlerNext2 = async () => {
+    await actions.getPlazasNext(store.plazas.next);
+  };
+  const handlerBack2 = async () => {
+    await actions.getPlazasBack(store.plazas.previous);
+  };
+  useEffect(() => {
+    actions.getPlazas();
+  }, []);
   return (
     <div className="mt-5">
       <div className="card" >
@@ -58,7 +47,6 @@ export const Plazas = () => {
           height: "350px"
         }}>
           {store.plazas.results && store.plazas.results.map((item, index) => {
-
             return (
               <div className="container-fluid row" key={index} style={{
                 minWidth: "220px",
@@ -75,27 +63,19 @@ export const Plazas = () => {
                   <h5 className="card-title">
                     {item.name}
                   </h5>
-
-
-                  <button href="#" onClick={()=>handlerDetail(item)} className="btn btn-primary">Saber mas...</button>
-                  <button href="#" onClick={()=>handlerFavorites2(item)} className="btn btn-danger">
+                  <button href="#" onClick={() => handlerDetail(item)} className="btn btn-primary">Saber mas...</button>
+                  <button href="#" onClick={() => handlerFavorites2(item)} className="btn btn-danger">
                     <FontAwesomeIcon icon={faHeart} />
                   </button>
-
                 </div>
               </div>
-
             );
           })}
         </div>
-        
       </div>
-      <button href="#" onClick={()=>handlerBack2(store.plazas.next)} className="btn btn-dark">Anterior</button>
-
-<button href="#" onClick={()=>handlerNext2(store.plazas.next)} className="btn btn-dark">Siguiente</button>
-
-          
-    </div>//Main div close
+      <button href="#" onClick={() => handlerBack2(store.plazas.next)} className="btn btn-dark">Anterior</button>
+      <button href="#" onClick={() => handlerNext2(store.plazas.next)} className="btn btn-dark">Siguiente</button>
+    </div>
   )
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
@@ -9,19 +9,14 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 export const Plebada = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
-  
   const handlerDetail = async (item) => {
-    console.log("aqui abajito", item);
-    let perro = await actions.goToDetailPlebada(item.url);
-    
-    if (perro) {
+    let navTo2 = await actions.goToDetailPlebada(item.url);
+    if (navTo2) {
       navigate("./masPlebada");
     }
   }
   const handlerFavorites = async (item) => {
-    console.log("previo",item)
     let favorites = await actions.addFavorites(item);
-    
     if (favorites) {
       alert("Agregado a favoritos");
     }
@@ -29,19 +24,14 @@ export const Plebada = () => {
   const handlerNext = async () => {
     console.log("Next", store.vatos.next);
     await actions.getVatosNext(store.vatos.next);
-    
-    
   };
   const handlerBack = async () => {
     console.log("Back", store.vatos.previous);
     await actions.getVatosBack(store.vatos.previous);
-    
-    
   };
   useEffect(() => {
     actions.getVatos();
   }, []);
-
   return (
     <div className="mt-5">
       <div className="card" style={{ width: "100%" }}>
@@ -59,7 +49,6 @@ export const Plebada = () => {
         height: "350px"
       }}>
         {store.vatos.results && store.vatos.results.map((item, index) => {
-          
             return (
               <div className="container-fluid row" key={index} style={{
                 minWidth: "220px",
@@ -80,18 +69,15 @@ export const Plebada = () => {
                 <button href="#" onClick={()=>handlerFavorites(item)} className="btn btn-danger">
                   <FontAwesomeIcon icon={faHeart} />
                 </button>
-                 
               </div>
             </div>
-
           );
         })}
       </div>
       </div>
       <button href="#" onClick={()=>handlerBack(store.vatos.next)} className="btn btn-dark">Anterior</button>
-
       <button href="#" onClick={()=>handlerNext(store.vatos.next)} className="btn btn-dark">Siguiente</button>
-    </div>//Main div close
+    </div>
   )
 }
 
